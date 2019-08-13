@@ -59,11 +59,11 @@ Widget cardInfo(context) {
                   children: <Widget>[
                     Row(
                       children: <Widget>[
-                        Icon(Icons.stars, size: 40, color: Colors.white),
+                        Icon(Icons.stars, size: 30, color: Colors.white),
                         Text(
-                          "000",
+                          " 000",
                           style: TextStyle(
-                            fontSize: 50,
+                            fontSize: 40,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),

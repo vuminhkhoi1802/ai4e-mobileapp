@@ -12,9 +12,7 @@ class Routes {
     runApp(
       new MaterialApp(
         title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'EFCircular'),
         home: DashboardScreen(),
         // routes: <String, WidgetBuilder>{
         //   '/auth': (BuildContext context) => AuthScreen(),

@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:ai4e_mobileapp/screens/DashboardScreen/CardInfo.dart";
+import "package:ai4e_mobileapp/screens/DashboardScreen/selectOption.dart";
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key key}) : super(key: key);
@@ -33,7 +34,33 @@ class DashboardScreen extends StatelessWidget {
                 children: <Widget>[
                   Align(
                     alignment: Alignment.topLeft,
-                    child: Text("Dashboard"),
+                    child: Container(
+                      margin: EdgeInsets.only(left: 20),
+                      child: Text(
+                        "Dashboard",
+                        style: TextStyle(
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Column(
+                    children: <Widget>[
+                      selectOption(
+                        Colors.purple,
+                        Icons.book,
+                        "Course",
+                        "Let's get started learning",
+                      ),
+                      selectOption(Color.fromRGBO(255, 255, 255, 0.2),
+                          Icons.face, "Assistant", "I'm here to help you!",
+                          colorIcon: Colors.purple),
+                      selectOption(Color.fromRGBO(245, 166, 35, 0.4),
+                          Icons.email, "Submit Feedback", "Let us know what you think of the app",
+                          colorIcon: Color(0xFFf5a623 ))
+                    ],
                   )
                 ],
               ),
