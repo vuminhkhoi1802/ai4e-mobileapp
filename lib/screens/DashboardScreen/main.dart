@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:ai4e_mobileapp/screens/DashboardScreen/CardInfo.dart";
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key key}) : super(key: key);
@@ -24,71 +25,17 @@ class DashboardScreen extends StatelessWidget {
                 )),
             Expanded(
               flex: 5,
-              child: Stack(
-                alignment: Alignment.centerRight,
-                children: <Widget>[
-                  Container(
-                    height: 100,
-                    width: 100,
-                    color: Colors.white,
-                  ),
-                  Container(
-                    decoration: new BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 8,
-                          spreadRadius: 2,
-                          color: Colors.grey[500],
-                        ),
-                      ],
-                    ),
-                    height: 200,
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    child: Stack(
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Container(
-                            decoration: new BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15.0),
-                                  bottomRight: Radius.circular(30.0),
-                                ),
-                                color: Color(0xFF2F297A)),
-                            child: Container(
-                                padding: EdgeInsets.all(10.0),
-                                child: Text(
-                                  "Guest - Level 19",
-                                  style: TextStyle(
-                                      fontSize: 20.0, color: Colors.white),
-                                )),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            child: Container(
-                                child: Text(
-                              "000",
-                              style: TextStyle(
-                                fontSize: 50,
-                                color: Colors.black,
-                              ),
-                            )),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              child: cardInfo(context),
             ),
             Expanded(
               flex: 5,
-              child: Container(
-                color: Colors.green,
+              child: Column(
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Text("Dashboard"),
+                  )
+                ],
               ),
             )
           ],
