@@ -93,7 +93,10 @@ class _LearnScreenState extends State<LearnScreen> {
   }
 
   _startRecord() async {
-    await AudioRecorder.start();
+    io.Directory directory = await getApplicationDocumentsDirectory();
+    await AudioRecorder.start(
+        path: '${directory.path}/${DateTime.now().microsecondsSinceEpoch}',
+        audioOutputFormat: AudioOutputFormat.WAV);
 
     setState(() {
       _recording = new Recording(duration: new Duration(), path: "");
