@@ -1,12 +1,12 @@
 import "package:flutter/material.dart";
 
-Widget selectOption(colorBackgroundIcon, icon, title, subtitle,
+Widget selectOption(colorBackgroundIcon, icon, title, subtitle, onTap,
     {colorIcon = Colors.white}) {
   return Container(
     child: Material(
         color: Colors.transparent,
         child: InkWell(
-            onTap: () {},
+            onTap: onTap,
             child: Card(
                 color: Colors.transparent,
                 elevation: 0,

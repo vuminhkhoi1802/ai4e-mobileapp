@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:ai4e_mobileapp/utils/time.dart';
 import 'package:ai4e_mobileapp/widgets/fullWidthBtn/main.dart';
 import "package:flutter/material.dart";
 import 'package:speech_recognition/speech_recognition.dart';
@@ -17,8 +14,6 @@ class SpeechRecognizer extends StatefulWidget {
 typedef addMessageCallback = void Function(String);
 
 class SpeechRecognizerState extends State<SpeechRecognizer> {
-  int time = 180;
-  Timer timer;
   final _speech = SpeechRecognition();
   bool _speechRecognitionAvailable = false, _isListening = false;
   String transcription = "";
@@ -32,7 +27,6 @@ class SpeechRecognizerState extends State<SpeechRecognizer> {
         () => setState(() => _isListening = true));
 
     _speech.setRecognitionResultHandler((String text) {
-//      print("result: $text, isListening: $_isListening");
       if (_isListening == false && text != "") {
         widget.addMessage(text);
         setState(() {
@@ -51,14 +45,6 @@ class SpeechRecognizerState extends State<SpeechRecognizer> {
         .then((res) => setState(() => _speechRecognitionAvailable = res));
   }
 
-  startTimer(callback) {
-    timer = Timer.periodic(const Duration(seconds: 1), callback);
-  }
-
-  cancelTimer() {
-    timer.cancel();
-  }
-
   _handlePress() async {
     if (_isListening) {
       _stopRecord();
@@ -75,21 +61,9 @@ class SpeechRecognizerState extends State<SpeechRecognizer> {
     setState(() {
       _isListening = true;
     });
-
-    startTimer((timer) {
-      setState(() {
-        if (time > 0 && _isListening) {
-          time = time - 1;
-        } else {
-          _stopRecord();
-        }
-      });
-    });
   }
 
   _stopRecord() async {
-    cancelTimer();
-    time = 180;
     _speech.stop();
     setState(() {
       _isListening = false;
@@ -119,9 +93,7 @@ class SpeechRecognizerState extends State<SpeechRecognizer> {
       child: fullWidthBtn(
         _isListening ? Colors.red : Colors.purple,
         Colors.white,
-        _isListening
-            ? "Press to Stop ${parseSecondToMinute(time)}"
-            : "Press to Record",
+        _isListening ? "Press to Stop " : "Press to Record",
         _handlePress,
         paddingBottom: 0,
       ),

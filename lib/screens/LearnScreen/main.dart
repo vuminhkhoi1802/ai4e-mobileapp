@@ -1,18 +1,11 @@
-//import 'dart:async';
-//import 'package:path_provider/path_provider.dart';
-//import 'dart:io' as io;
-
 import "package:flutter/material.dart";
 import "package:ai4e_mobileapp/screens/LearnScreen/Bubble.dart";
-//import "package:ai4e_mobileapp/widgets/fullWidthBtn/main.dart";
-//import 'package:audio_recorder/audio_recorder.dart';
-//import "package:ai4e_mobileapp/utils/time.dart";
-
 import 'SpeechRecognizer.dart';
+import "./RecordBtn.dart";
 
 class LearnScreen extends StatefulWidget {
-  LearnScreen({Key key}) : super(key: key);
-
+  LearnScreen({Key key, this.isAssistant}) : super(key: key);
+  final bool isAssistant;
   LearnScreenState createState() => LearnScreenState();
 }
 
@@ -80,7 +73,7 @@ class LearnScreenState extends State<LearnScreen> {
             children: <Widget>[
               messageList,
               Divider(),
-              SpeechRecognizer(addMessage)
+              widget.isAssistant ? SpeechRecognizer(addMessage) : RecordBtn()
             ]),
       ),
     );

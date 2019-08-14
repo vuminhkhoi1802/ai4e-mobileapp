@@ -20,7 +20,6 @@ Widget fullWidthBtn(colorBackground, colorText, text, onPress,
         height: 50,
         width: double.infinity,
         child: new RaisedButton(
-          
           color: colorBackground,
           child: new Text(
             text.toUpperCase(),

@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import "package:ai4e_mobileapp/screens/DashboardScreen/CardInfo.dart";
 import "package:ai4e_mobileapp/screens/DashboardScreen/selectOption.dart";
+import "package:ai4e_mobileapp/screens/ListCourseScreen/main.dart";
+import "package:ai4e_mobileapp/screens/LearnScreen/main.dart";
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key key}) : super(key: key);
@@ -48,20 +50,29 @@ class DashboardScreen extends StatelessWidget {
                   ),
                   Column(
                     children: <Widget>[
-                      selectOption(
-                        Colors.purple,
-                        Icons.book,
-                        "Course",
-                        "Let's get started learning",
-                      ),
+                      selectOption(Colors.purple, Icons.book, "Course",
+                          "Let's get started learning", () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    ListCourseScreen()));
+                      }),
                       selectOption(Color.fromRGBO(255, 255, 255, 0.2),
-                          Icons.face, "Assistant", "I'm here to help you!",
-                          colorIcon: Colors.purple),
+                          Icons.face, "Assistant", "I'm here to help you!", () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => LearnScreen(
+                                      isAssistant: true,
+                                    )));
+                      }, colorIcon: Colors.purple),
                       selectOption(
                           Color.fromRGBO(245, 166, 35, 0.4),
                           Icons.email,
                           "Submit Feedback",
                           "Let us know what you think of the app",
+                          () {},
                           colorIcon: Color(0xFFf5a623))
                     ],
                   )
