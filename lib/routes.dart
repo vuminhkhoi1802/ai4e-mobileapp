@@ -3,6 +3,7 @@ import 'package:ai4e_mobileapp/screens/AuthScreen/main.dart';
 import "package:ai4e_mobileapp/screens/DashboardScreen/main.dart";
 import "package:ai4e_mobileapp/screens/LearnScreen/main.dart";
 import "package:ai4e_mobileapp/screens/SplashScreen/main.dart";
+import "package:ai4e_mobileapp/screens/LoadingScreen/main.dart";
 import "package:flutter/services.dart";
 import "package:ai4e_mobileapp/screens/AuthScreen/handleAuth/Login/main.dart";
 
@@ -16,11 +17,12 @@ class Routes {
       new MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'EFCircular'),
-        home: LoginScreen(),
+        home: AuthScreen(),
         routes: <String, WidgetBuilder>{
           '/auth': (BuildContext context) => AuthScreen(),
           '/dashboard': (BuildContext context) => DashboardScreen(),
           '/learn': (BuildContext context) => LearnScreen(),
+          '/loading': (BuildContext context) => LoadingScreen(),
         },
       ),
     );

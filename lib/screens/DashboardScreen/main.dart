@@ -57,9 +57,12 @@ class DashboardScreen extends StatelessWidget {
                       selectOption(Color.fromRGBO(255, 255, 255, 0.2),
                           Icons.face, "Assistant", "I'm here to help you!",
                           colorIcon: Colors.purple),
-                      selectOption(Color.fromRGBO(245, 166, 35, 0.4),
-                          Icons.email, "Submit Feedback", "Let us know what you think of the app",
-                          colorIcon: Color(0xFFf5a623 ))
+                      selectOption(
+                          Color.fromRGBO(245, 166, 35, 0.4),
+                          Icons.email,
+                          "Submit Feedback",
+                          "Let us know what you think of the app",
+                          colorIcon: Color(0xFFf5a623))
                     ],
                   )
                 ],

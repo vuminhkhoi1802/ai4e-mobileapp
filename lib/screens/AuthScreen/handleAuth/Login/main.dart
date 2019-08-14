@@ -1,6 +1,4 @@
 import "package:flutter/material.dart";
-import "CustomTextField.dart";
-import "package:ai4e_mobileapp/widgets/fullWidthBtn/main.dart";
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key key}) : super(key: key);
@@ -9,48 +7,42 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          centerTitle: true,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: IconButton(
-            icon: Icon(
-              Icons.close,
-              color: Color(0xff77777a),
+            centerTitle: true,
+            backgroundColor: Colors.white,
+            elevation: 4,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.black),
+              onPressed: () => Navigator.pop(context),
             ),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: Text(
-            'Enter your detail'.toUpperCase(),
-            style: TextStyle(color: Color(0xff77777a)),
-          ),
-        ),
-        body: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          onTap: () {
-            FocusScope.of(context).requestFocus(new FocusNode());
-          },
-          child: Container(
-              margin: EdgeInsets.only(right: 20, left: 20),
-              child: Column(
+            title: Text(
+              "Login",
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            )),
+        body: Center(
+          child: RaisedButton(
+              onPressed: () =>
+                  Navigator.pushReplacementNamed(context, "/loading"),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(100),
+              ),
+              padding: EdgeInsets.only(left: 20),
+              color: const Color(0xFFFFFFFF),
+              child: new Row(
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  customTextField(
-                    "Username or email",
-                    BorderRadius.only(
-                      topRight: Radius.circular(15),
-                      topLeft: Radius.circular(15),
-                    ),
-                    paddingTop: 20.0,
+                  new Image.asset(
+                    'assets/google_button.jpg',
+                    height: 30.0,
                   ),
-                  customTextField(
-                    "Password",
-                    BorderRadius.only(
-                      bottomLeft: Radius.circular(15),
-                      bottomRight: Radius.circular(15),
-                    ),
-                    secure: true,
-                  ),
-                  fullWidthBtn(Color(0xff20BF55), Colors.white, "Login", () {},
-                      paddingTop: 20.0),
+                  new Container(
+                      padding: EdgeInsets.all(20),
+                      child: new Text(
+                        "Sign in with Google",
+                        style: TextStyle(
+                            color: Colors.grey, fontWeight: FontWeight.bold),
+                      )),
                 ],
               )),
         ));

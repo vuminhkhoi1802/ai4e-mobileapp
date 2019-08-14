@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:ai4e_mobileapp/screens/AuthScreen/handleAuth/Login/main.dart";
 import "package:ai4e_mobileapp/screens/AuthScreen/handleAuth/Register/selectSkill.dart";
 
 class RegisterScreen extends StatelessWidget {
@@ -32,14 +33,21 @@ class RegisterScreen extends StatelessWidget {
                       children: <Widget>[
                         Align(
                             alignment: Alignment.topRight,
-                            child: Container(
-                              padding: EdgeInsets.only(right: 10),
-                              child: Text(
-                                "I already have an account",
-                                style: TextStyle(
-                                    fontSize: 19, color: Color(0xFFFAFAFA)),
-                              ),
-                            )),
+                            child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => LoginScreen()));
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(right: 10),
+                                  child: Text(
+                                    "I already have an account",
+                                    style: TextStyle(
+                                        fontSize: 19, color: Color(0xFFFAFAFA)),
+                                  ),
+                                ))),
                         Spacer(
                           flex: 1,
                         ),
