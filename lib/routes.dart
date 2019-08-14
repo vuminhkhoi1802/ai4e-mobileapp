@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ai4e_mobileapp/screens/AuthScreen/main.dart';
 import "package:ai4e_mobileapp/screens/DashboardScreen/main.dart";
+import "package:ai4e_mobileapp/screens/LearnScreen/main.dart";
 import "package:flutter/services.dart";
 
 class Routes {
@@ -13,7 +14,7 @@ class Routes {
       new MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'EFCircular'),
-        home: DashboardScreen(),
+        home: LearnScreen(),
         // routes: <String, WidgetBuilder>{
         //   '/auth': (BuildContext context) => AuthScreen(),
         // },
