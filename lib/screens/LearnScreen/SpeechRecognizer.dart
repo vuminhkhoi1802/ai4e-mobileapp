@@ -1,7 +1,6 @@
 import 'package:ai4e_mobileapp/widgets/fullWidthBtn/main.dart';
 import "package:flutter/material.dart";
 import 'package:speech_recognition/speech_recognition.dart';
-import "package:ai4e_mobileapp/utils/dialogflow.dart";
 
 class SpeechRecognizer extends StatefulWidget {
   @override
@@ -20,11 +19,6 @@ class SpeechRecognizerState extends State<SpeechRecognizer> {
   String transcription = "";
   final String _currentLocale = "en_US";
 
-  void _response(String inp) async {
-    var response = await getAnwser(inp);
-    widget.addMessage(response, isMine: false);
-  }
-
   void _speechInit() {
     _speech.setAvailabilityHandler(
         (bool result) => setState(() => _speechRecognitionAvailable = result));
@@ -35,7 +29,6 @@ class SpeechRecognizerState extends State<SpeechRecognizer> {
     _speech.setRecognitionResultHandler((String text) {
       if (_isListening == false && text != "") {
         widget.addMessage(text);
-        _response(text);
         setState(() {
           return transcription = text;
         });

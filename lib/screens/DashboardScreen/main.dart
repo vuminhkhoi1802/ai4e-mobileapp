@@ -3,7 +3,6 @@ import "package:ai4e_mobileapp/screens/DashboardScreen/CardInfo.dart";
 import "package:ai4e_mobileapp/screens/DashboardScreen/selectOption.dart";
 import "package:ai4e_mobileapp/screens/ListCourseScreen/main.dart";
 import "package:ai4e_mobileapp/screens/LearnScreen/main.dart";
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key key}) : super(key: key);

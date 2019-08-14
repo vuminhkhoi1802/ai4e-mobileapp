@@ -31,9 +31,6 @@ dependencies:
   shared_preferences:
   gcloud:
   dio:
-  firebase_core: ^0.4.0+1
-  cloud_firestore: ^0.12.9
-  flutter_tts:
 
   
 

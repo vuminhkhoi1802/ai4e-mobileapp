@@ -2,7 +2,6 @@ import "package:flutter/material.dart";
 import "package:ai4e_mobileapp/screens/LearnScreen/Bubble.dart";
 import 'SpeechRecognizer.dart';
 import "./RecordBtn.dart";
-import "./tts.dart";
 
 class LearnScreen extends StatefulWidget {
   LearnScreen({Key key, this.isAssistant, this.title}) : super(key: key);
@@ -12,13 +11,6 @@ class LearnScreen extends StatefulWidget {
 }
 
 class LearnScreenState extends State<LearnScreen> {
-  String voiceText;
-  void setVoiceMsg() {
-    setState(() {
-      voiceText = "";
-    });
-  }
-
   List<Map<String, dynamic>> message = [
     {
       "message": 'Hello, Welcome to the Speaking Trainer',
@@ -30,9 +22,6 @@ class LearnScreenState extends State<LearnScreen> {
     newS.add({"message": s, "isMine": isMine});
     setState(() {
       message = newS;
-      if (!isMine) {
-        voiceText = s;
-      }
     });
   }
 
@@ -72,7 +61,6 @@ class LearnScreenState extends State<LearnScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              TTS(text: voiceText, setMsg: setVoiceMsg),
               messageList,
               Divider(),
               widget.isAssistant
