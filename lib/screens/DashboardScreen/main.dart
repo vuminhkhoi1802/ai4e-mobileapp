@@ -65,6 +65,7 @@ class DashboardScreen extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (BuildContext context) => LearnScreen(
                                       isAssistant: true,
+                                      title: "",
                                     )));
                       }, colorIcon: Colors.purple),
                       selectOption(

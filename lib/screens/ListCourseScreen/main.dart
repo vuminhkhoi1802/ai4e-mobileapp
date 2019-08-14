@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:ai4e_mobileapp/screens/LearnScreen/main.dart";
 
 class ListCourseScreen extends StatelessWidget {
   const ListCourseScreen({Key key}) : super(key: key);
@@ -11,7 +12,7 @@ class ListCourseScreen extends StatelessWidget {
           elevation: 4,
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () {},
+            onPressed: () {Navigator.pop(context);},
           ),
           title: Text(
             "Family",
@@ -50,7 +51,15 @@ class Item extends StatelessWidget {
             onTap: () {
               if (icon == Icons.lock) {
                 Scaffold.of(context).showSnackBar(snackBar);
-              } else {}
+              } else {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => LearnScreen(
+                              isAssistant: false,
+                              title: title,
+                            )));
+              }
             },
             child: ListTile(
               leading: Icon(icon),

@@ -4,33 +4,22 @@ import 'SpeechRecognizer.dart';
 import "./RecordBtn.dart";
 
 class LearnScreen extends StatefulWidget {
-  LearnScreen({Key key, this.isAssistant}) : super(key: key);
+  LearnScreen({Key key, this.isAssistant, this.title}) : super(key: key);
   final bool isAssistant;
+  final String title;
   LearnScreenState createState() => LearnScreenState();
 }
 
 class LearnScreenState extends State<LearnScreen> {
   List<Map<String, dynamic>> message = [
     {
-      "message": 'Hi there, this is a message',
+      "message": 'Hello, Welcome to the Speaking Trainer',
       "isMine": false,
-    },
-    {
-      "message": 'Whatsapp like bubble talk',
-      "isMine": false,
-    },
-    {
-      "message": 'Nice one, Flutter is awesome',
-      "isMine": true,
-    },
-    {
-      "message": 'I\'ve told you so dude!',
-      "isMine": false,
-    },
+    }
   ];
-  void addMessage(String s) {
+  void addMessage(String s, {bool isMine: true}) {
     var newS = message;
-    newS.add({"message": s, "isMine": true});
+    newS.add({"message": s, "isMine": isMine});
     setState(() {
       message = newS;
     });
@@ -50,17 +39,18 @@ class LearnScreenState extends State<LearnScreen> {
         children: messageObject,
       ),
     );
-
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 4,
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
           title: Text(
-            "Family",
+            widget.title == "" ? "Assistant" : widget.title,
             style: TextStyle(
               color: Colors.black,
             ),
@@ -73,7 +63,9 @@ class LearnScreenState extends State<LearnScreen> {
             children: <Widget>[
               messageList,
               Divider(),
-              widget.isAssistant ? SpeechRecognizer(addMessage) : RecordBtn()
+              widget.isAssistant
+                  ? SpeechRecognizer(addMessage)
+                  : RecordBtn(addMessage: addMessage)
             ]),
       ),
     );

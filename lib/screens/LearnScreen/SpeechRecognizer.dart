@@ -11,7 +11,7 @@ class SpeechRecognizer extends StatefulWidget {
   SpeechRecognizer(this.addMessage);
 }
 
-typedef addMessageCallback = void Function(String);
+typedef addMessageCallback = void Function(String, {bool isMine});
 
 class SpeechRecognizerState extends State<SpeechRecognizer> {
   final _speech = SpeechRecognition();
@@ -74,21 +74,13 @@ class SpeechRecognizerState extends State<SpeechRecognizer> {
   void initState() {
     super.initState();
     _speechInit();
+    if (_speechRecognitionAvailable) {
+      _activatePermission();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_speechRecognitionAvailable == false) {
-      return Container(
-        child: fullWidthBtn(
-          Colors.red,
-          Colors.white,
-          "Activate Speech",
-          _activatePermission,
-          paddingBottom: 0,
-        ),
-      );
-    }
     return Container(
       child: fullWidthBtn(
         _isListening ? Colors.red : Colors.purple,
