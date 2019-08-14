@@ -18,6 +18,7 @@ class _LearnScreenState extends State<LearnScreen> {
   bool isActive = false;
   int time = 180;
   Timer timer;
+  Recording _recording = new Recording();
 
   startTimer(callback) {
     timer = Timer.periodic(const Duration(seconds: 1), callback);
@@ -92,12 +93,10 @@ class _LearnScreenState extends State<LearnScreen> {
   }
 
   _startRecord() async {
-    // io.Directory appDocDirectory = await getApplicationDocumentsDirectory();
-    // var path = appDocDirectory.path + '/' + "1";
+    await AudioRecorder.start();
 
-    // await AudioRecorder.start(
-    //     path: path, audioOutputFormat: AudioOutputFormat.AAC);
     setState(() {
+      _recording = new Recording(duration: new Duration(), path: "");
       isActive = true;
     });
     startTimer((timer) {
@@ -112,8 +111,8 @@ class _LearnScreenState extends State<LearnScreen> {
   }
 
   _stopRecord() async {
-    // var recording = await AudioRecorder.stop();
-
+    var recording = await AudioRecorder.stop();
+    print(recording.path);
     cancelTimer();
     time = 180;
     setState(() {
