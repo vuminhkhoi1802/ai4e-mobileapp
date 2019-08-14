@@ -1,15 +1,15 @@
 import "package:flutter/material.dart";
 
 class Bubble extends StatelessWidget {
-  Bubble({this.message, this.isTheir});
+  Bubble({this.message, this.isMine});
 
   final String message;
-  final isTheir;
+  final isMine;
 
   @override
   Widget build(BuildContext context) {
-    final bg = isTheir ? Color(0xFFD2E3FC) : Color(0xFFf1f3f4);
-    final align = isTheir ? CrossAxisAlignment.end : CrossAxisAlignment.start;
+    final bg = isMine ? Color(0xFFD2E3FC) : Color(0xFFf1f3f4);
+    final align = isMine ? CrossAxisAlignment.end : CrossAxisAlignment.start;
     final radius = BorderRadius.circular(10);
     return Column(
       crossAxisAlignment: align,
@@ -32,7 +32,7 @@ class Bubble extends StatelessWidget {
               Text(
                 message,
                 style: TextStyle(
-                    color: isTheir ? Color(0xFF174EA6) : Colors.black),
+                    color: isMine ? Color(0xFF174EA6) : Colors.black),
               ),
             ],
           ),

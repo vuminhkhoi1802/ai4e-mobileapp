@@ -25,6 +25,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   audio_recorder:
   path_provider:
+  speech_recognition:
     
 dev_dependencies:
   flutter_test:

@@ -1,35 +1,63 @@
-import 'dart:async';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io' as io;
+//import 'dart:async';
+//import 'package:path_provider/path_provider.dart';
+//import 'dart:io' as io;
 
 import "package:flutter/material.dart";
 import "package:ai4e_mobileapp/screens/LearnScreen/Bubble.dart";
-import "package:ai4e_mobileapp/widgets/fullWidthBtn/main.dart";
-import 'package:audio_recorder/audio_recorder.dart';
-import "package:ai4e_mobileapp/utils/time.dart";
+//import "package:ai4e_mobileapp/widgets/fullWidthBtn/main.dart";
+//import 'package:audio_recorder/audio_recorder.dart';
+//import "package:ai4e_mobileapp/utils/time.dart";
+
+import 'SpeechRecognizer.dart';
 
 class LearnScreen extends StatefulWidget {
   LearnScreen({Key key}) : super(key: key);
 
-  _LearnScreenState createState() => _LearnScreenState();
+  LearnScreenState createState() => LearnScreenState();
 }
 
-class _LearnScreenState extends State<LearnScreen> {
-  bool isActive = false;
-  int time = 180;
-  Timer timer;
-  Recording _recording = new Recording();
-
-  startTimer(callback) {
-    timer = Timer.periodic(const Duration(seconds: 1), callback);
-  }
-
-  cancelTimer() {
-    timer.cancel();
+class LearnScreenState extends State<LearnScreen> {
+  List<Map<String, dynamic>> message = [
+    {
+      "message": 'Hi there, this is a message',
+      "isMine": false,
+    },
+    {
+      "message": 'Whatsapp like bubble talk',
+      "isMine": false,
+    },
+    {
+      "message": 'Nice one, Flutter is awesome',
+      "isMine": true,
+    },
+    {
+      "message": 'I\'ve told you so dude!',
+      "isMine": false,
+    },
+  ];
+  void addMessage(String s) {
+    var newS = message;
+    newS.add({"message": s, "isMine": true});
+    setState(() {
+      message = newS;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> messageObject = message.map((m) {
+      return Bubble(
+        message: m["message"],
+        isMine: m["isMine"],
+      );
+    }).toList();
+    var messageList = Flexible(
+      child: ListView(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        children: messageObject,
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Colors.white,
@@ -47,79 +75,14 @@ class _LearnScreenState extends State<LearnScreen> {
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Bubble(
-              message: 'Hi there, this is a message',
-              isTheir: false,
-            ),
-            Bubble(
-              message: 'Whatsapp like bubble talk',
-              isTheir: false,
-            ),
-            Bubble(
-              message: 'Nice one, Flutter is awesome',
-              isTheir: true,
-            ),
-            Bubble(
-              message: 'I\'ve told you so dude!',
-              isTheir: false,
-            ),
-            Divider(),
-            Container(
-              child: fullWidthBtn(
-                isActive ? Colors.red : Colors.purple,
-                Colors.white,
-                isActive
-                    ? "Press to Stop ${parseSecondToMinute(time)}"
-                    : "Press to Record",
-                _handlePress,
-                paddingBottom: 0,
-              ),
-            )
-          ],
-        ),
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              messageList,
+              Divider(),
+              SpeechRecognizer(addMessage)
+            ]),
       ),
     );
-  }
-
-  _handlePress() async {
-    if (isActive) {
-      _stopRecord();
-    } else {
-      _startRecord();
-    }
-  }
-
-  _startRecord() async {
-    io.Directory directory = await getApplicationDocumentsDirectory();
-    await AudioRecorder.start(
-        path: '${directory.path}/${DateTime.now().microsecondsSinceEpoch}',
-        audioOutputFormat: AudioOutputFormat.WAV);
-
-    setState(() {
-      _recording = new Recording(duration: new Duration(), path: "");
-      isActive = true;
-    });
-    startTimer((timer) {
-      setState(() {
-        if (time > 0 && isActive) {
-          time = time - 1;
-        } else {
-          _stopRecord();
-        }
-      });
-    });
-  }
-
-  _stopRecord() async {
-    var recording = await AudioRecorder.stop();
-    print(recording.path);
-    cancelTimer();
-    time = 180;
-    setState(() {
-      isActive = false;
-    });
   }
 }
