@@ -1,3 +1,4 @@
+import 'package:ai4e_mobileapp/screens/LearnScreen/Loader.dart';
 import 'package:ai4e_mobileapp/utils/calculateScore.dart';
 import "package:flutter/material.dart";
 import "package:ai4e_mobileapp/screens/LearnScreen/Bubble.dart";
@@ -5,6 +6,8 @@ import 'SpeechRecognizer.dart';
 import "./RecordBtn.dart";
 import "./tts.dart";
 import "package:ai4e_mobileapp/mobx/main.dart";
+import "package:wave/wave.dart";
+import "package:wave/config.dart";
 
 class LearnScreen extends StatefulWidget {
   LearnScreen({Key key, this.isAssistant, this.title}) : super(key: key);
@@ -18,16 +21,33 @@ class LearnScreenState extends State<LearnScreen> {
   void initState() {
     super.initState();
     isAssistant = widget.isAssistant;
-    addMessage(
-        "For this lesson, you should spent 3 minutes speaking about your ${widget.title == "Family" ? "family" : "beloved pet"}",
-        isMine: false);
+    if (!isAssistant)
+      addMessage(
+          "For this lesson, you should spent 3 minutes speaking about your ${widget.title == "Family" ? "family" : "beloved pet"}",
+          isMine: false);
   }
 
   String voiceText;
   bool isAssistant = false;
+  bool isLoading = false;
+  bool isListening = false;
+  double rms = 0;
   void setVoiceMsg() {
     setState(() {
       voiceText = "";
+    });
+  }
+
+  void toggleLoading() {
+    setState(() {
+      isLoading = !isLoading;
+    });
+  }
+
+  void setRMS(state, rms) {
+    setState(() {
+      isListening = state;
+      rms = rms;
     });
   }
 
@@ -71,12 +91,17 @@ class LearnScreenState extends State<LearnScreen> {
           isMine: m["isMine"],
         );
       return BubbleCard(
-        message: m["message"],
-        isMine: m["isMine"],
-        addMessage: addMessage,
-        title: widget.title
-      );
-    }).toList();
+          message: m["message"],
+          isMine: m["isMine"],
+          addMessage: addMessage,
+          title: widget.title);
+    }).toList(growable: true);
+    if (isLoading) {
+      messageObject.add(Container(
+        child: ColorLoader4(),
+        padding: EdgeInsets.all(20),
+      ));
+    }
     var messageList = Flexible(
       child: ListView(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -107,11 +132,30 @@ class LearnScreenState extends State<LearnScreen> {
             children: <Widget>[
               TTS(text: voiceText, setMsg: setVoiceMsg),
               messageList,
+              isListening
+                  ? Container(
+                      child: WaveWidget(
+                        config: CustomConfig(
+                          gradients: [
+                            [Colors.red, Color(0xEEF44336)],
+                            [Colors.red[800], Color(0x77E57373)],
+                            [Colors.orange, Color(0x66FF9800)],
+                            [Colors.yellow, Color(0x55FFEB3B)]
+                          ],
+                          durations: [10000, 8000, 3000, 1000],
+                          heightPercentages: [0.20, 0.23, 0.25, 0.30],
+                          blur: MaskFilter.blur(BlurStyle.solid, 10),
+                          gradientBegin: Alignment.bottomLeft,
+                          gradientEnd: Alignment.topRight,
+                        ),
+                        size: Size(double.infinity, 40),
+                        backgroundColor: Colors.transparent,
+                      ),
+                    )
+                  : SizedBox(width: double.infinity, height: 40),
               Divider(),
               isAssistant
-                  ? SpeechRecognizer(
-                      addMessage,
-                    )
+                  ? SpeechRecognizer(addMessage, toggleLoading, setRMS)
                   : RecordBtn(
                       addMessage: addMessage,
                       addScore: addScore,

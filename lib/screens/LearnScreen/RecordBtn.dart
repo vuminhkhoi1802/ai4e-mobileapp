@@ -150,7 +150,11 @@ class _RecordBtnState extends State<RecordBtn> {
       isConfirm = false;
       duration = recording.duration.inSeconds;
     });
-    uploadFile(name, recording.path);
+    try {
+      uploadFile(name, recording.path);
+    } catch (err) {
+      widget.addMessage("Token time out", isMine: false);
+    }
     widget.changeMode();
     setState(() {
       recording = Recording();

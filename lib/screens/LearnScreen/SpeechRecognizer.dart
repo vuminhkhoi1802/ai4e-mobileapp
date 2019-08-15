@@ -3,13 +3,16 @@ import "package:flutter/material.dart";
 import 'package:speech_recognition/speech_recognition.dart';
 import "package:ai4e_mobileapp/utils/dialogflow.dart";
 
+
 class SpeechRecognizer extends StatefulWidget {
   @override
   SpeechRecognizerState createState() => SpeechRecognizerState();
 
   final addMessageCallback addMessage;
+  final Function toggleLoading;
+  final Function setRMS;
 
-  SpeechRecognizer(this.addMessage);
+  SpeechRecognizer(this.addMessage, this.toggleLoading, this.setRMS);
 }
 
 typedef addMessageCallback = void Function(String, {bool isMine});
@@ -19,8 +22,12 @@ class SpeechRecognizerState extends State<SpeechRecognizer> {
   bool _speechRecognitionAvailable = false, _isListening = false;
   String transcription = "";
   final String _currentLocale = "en_US";
+  double rms = 1;
+
   void _response(String inp) async {
+    widget.toggleLoading();
     var response = await getAnwser(inp);
+    widget.toggleLoading();
     widget.addMessage(response, isMine: false);
   }
 
@@ -29,8 +36,11 @@ class SpeechRecognizerState extends State<SpeechRecognizer> {
         (bool result) => setState(() => _speechRecognitionAvailable = result));
 
     _speech.setRecognitionStartedHandler(
-        () => setState(() => _isListening = true));
-
+        () {
+          setState(() => _isListening = true);
+          widget.setRMS(true, 0.0);
+        }
+    );
     _speech.setRecognitionResultHandler((String text) {
       if (_isListening == false && text != "") {
         widget.addMessage(text, isMine: true);
@@ -42,7 +52,12 @@ class SpeechRecognizerState extends State<SpeechRecognizer> {
     });
 
     _speech.setRecognitionCompleteHandler(
-        () => setState(() => _isListening = false));
+        () {
+          setState(() => _isListening = false);
+          widget.setRMS(false, 0.0);
+        });
+
+    // _speech.setRmsChangedHandler((val) => widget.setRMS(true, val));
   }
 
   void _activatePermission() {
@@ -87,14 +102,15 @@ class SpeechRecognizerState extends State<SpeechRecognizer> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: fullWidthBtn(
-        _isListening ? Colors.red : Colors.purple,
-        Colors.white,
-        _isListening ? "Press to Stop " : "Press to Record",
-        _handlePress,
-        paddingBottom: 0,
-      ),
-    );
+    return 
+        Container(
+          child: fullWidthBtn(
+              _isListening? Colors.red : Colors.purple,
+              Colors.white,
+              _isListening ? "Press to Stop " : "Press to Record",
+              _handlePress,
+              paddingBottom: 0,
+          ),
+        );
   }
 }
