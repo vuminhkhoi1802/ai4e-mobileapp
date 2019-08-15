@@ -17,10 +17,11 @@ Future<String> generateToken() async {
 Future<String> getAnwser(String message) async {
   var token = await generateToken();
   Response response = await post(
-      "https://us-central1-ainlp-249715.cloudfunctions.net/dialogmessage/send",
+      "https://asia-east2-ainlp-249715.cloudfunctions.net/dialogmessage/send",
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
       body: json.encode({'session': '$token', 'message': '$message'}));
   if (response.statusCode == 200) {
+  
     return json.decode(response.body)["response"];
   }
   return "";
