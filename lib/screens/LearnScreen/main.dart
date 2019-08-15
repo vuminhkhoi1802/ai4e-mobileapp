@@ -4,6 +4,7 @@ import "package:ai4e_mobileapp/screens/LearnScreen/Bubble.dart";
 import 'SpeechRecognizer.dart';
 import "./RecordBtn.dart";
 import "./tts.dart";
+import "package:ai4e_mobileapp/mobx/main.dart";
 
 class LearnScreen extends StatefulWidget {
   LearnScreen({Key key, this.isAssistant, this.title}) : super(key: key);
@@ -31,7 +32,6 @@ class LearnScreenState extends State<LearnScreen> {
   }
 
   void changeMode() {
-    print(isAssistant);
     setState(() {
       isAssistant = !isAssistant;
     });
@@ -56,6 +56,8 @@ class LearnScreenState extends State<LearnScreen> {
 
   void addScore(Map<String, dynamic> score, int duration) {
     var sc = calculateScore(score, widget.title, duration).floor();
+    changeMode();
+    user.increaseScore(sc.toInt());
     addMessage("Your have scored $sc for this test",
         isMine: false, isCard: true);
   }
@@ -71,6 +73,8 @@ class LearnScreenState extends State<LearnScreen> {
       return BubbleCard(
         message: m["message"],
         isMine: m["isMine"],
+        addMessage: addMessage,
+        title: widget.title
       );
     }).toList();
     var messageList = Flexible(

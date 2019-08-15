@@ -38,9 +38,11 @@ class Bubble extends StatelessWidget {
 }
 
 class BubbleCard extends StatelessWidget {
-  const BubbleCard({this.message, this.isMine});
+  BubbleCard({this.message, this.isMine, this.addMessage, this.title});
+  final Function addMessage;
   final String message;
   final bool isMine;
+  final String title;
 
   @override
   Widget build(BuildContext context) {
@@ -77,12 +79,18 @@ class BubbleCard extends StatelessWidget {
                     child: ButtonBar(
                       children: <Widget>[
                         FlatButton(
-                          child: const Text('Next'),
-                          onPressed: () {/* ... */},
+                          child: const Text('Practice other'),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
                         ),
                         FlatButton(
-                          child: const Text('LISTEN'),
-                          onPressed: () {/* ... */},
+                          child: const Text('Practice again'),
+                          onPressed: () {
+                            addMessage(
+        "For this lesson, you should spent 3 minutes speaking about your ${title == "Family" ? "family" : "beloved pet"}",
+        isMine: false);
+                          },
                         ),
                       ],
                     ),

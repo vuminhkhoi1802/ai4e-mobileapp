@@ -18,7 +18,7 @@ class DashboardScreen extends StatelessWidget {
                   alignment: Alignment.bottomLeft,
                   child: Container(
                     margin: EdgeInsets.only(left: 20),
-                    child: Text("Monday August 12",
+                    child: Text("Thursday August 15",
                         style: TextStyle(
                           color: Colors.grey[500],
                           fontWeight: FontWeight.bold,
@@ -50,8 +50,8 @@ class DashboardScreen extends StatelessWidget {
                   ),
                   Column(
                     children: <Widget>[
-                      selectOption(Colors.purple, Icons.book, "Course",
-                          "Let's get started learning", () {
+                      selectOption(Colors.purple, Icons.book, "Practice",
+                          "Let's start practicing", () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -59,7 +59,7 @@ class DashboardScreen extends StatelessWidget {
                                     ListCourseScreen()));
                       }),
                       selectOption(Color.fromRGBO(255, 255, 255, 0.2),
-                          Icons.face, "Assistant", "I'm here to help you!", () {
+                          Icons.face, "Assistant", "Talk to me", () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
