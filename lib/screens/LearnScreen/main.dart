@@ -1,3 +1,4 @@
+import 'package:ai4e_mobileapp/utils/calculateScore.dart';
 import "package:flutter/material.dart";
 import "package:ai4e_mobileapp/screens/LearnScreen/Bubble.dart";
 import 'SpeechRecognizer.dart';
@@ -12,34 +13,62 @@ class LearnScreen extends StatefulWidget {
 }
 
 class LearnScreenState extends State<LearnScreen> {
+  @override
+  void initState() {
+    super.initState();
+    isAssistant = widget.isAssistant;
+    addMessage(
+        "For this lesson, you should spent 3 minutes speaking about your ${widget.title == "Family" ? "family" : "beloved pet"}",
+        isMine: false);
+  }
+
   String voiceText;
+  bool isAssistant = false;
   void setVoiceMsg() {
     setState(() {
       voiceText = "";
     });
   }
 
-  List<Map<String, dynamic>> message = [
-    {
-      "message": 'Hello, Welcome to the Speaking Trainer',
-      "isMine": false,
-    }
-  ];
-  void addMessage(String s, {bool isMine: true}) {
+  void changeMode() {
+    print(isAssistant);
+    setState(() {
+      isAssistant = !isAssistant;
+    });
+  }
+
+  List<Map<String, dynamic>> message = [];
+  void addMessage(String s,
+      {bool isMine: true, bool shouldSpeak: true, bool isCard = false}) {
     var newS = message;
-    newS.add({"message": s, "isMine": isMine});
+    newS.add({
+      "message": s,
+      "isMine": isMine,
+      "isCard": isCard,
+    });
     setState(() {
       message = newS;
-      if (!isMine) {
+      if (!isMine && shouldSpeak) {
         voiceText = s;
       }
     });
   }
 
+  void addScore(Map<String, dynamic> score, int duration) {
+    var sc = calculateScore(score, widget.title, duration).floor();
+    addMessage("Your have scored $sc for this test",
+        isMine: false, isCard: true);
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> messageObject = message.map((m) {
-      return Bubble(
+      if (!m["isCard"])
+        return Bubble(
+          message: m["message"],
+          isMine: m["isMine"],
+        );
+      return BubbleCard(
         message: m["message"],
         isMine: m["isMine"],
       );
@@ -75,9 +104,14 @@ class LearnScreenState extends State<LearnScreen> {
               TTS(text: voiceText, setMsg: setVoiceMsg),
               messageList,
               Divider(),
-              widget.isAssistant
-                  ? SpeechRecognizer(addMessage)
-                  : RecordBtn(addMessage: addMessage)
+              isAssistant
+                  ? SpeechRecognizer(
+                      addMessage,
+                    )
+                  : RecordBtn(
+                      addMessage: addMessage,
+                      addScore: addScore,
+                      changeMode: changeMode)
             ]),
       ),
     );

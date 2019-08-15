@@ -33,7 +33,7 @@ class SpeechRecognizerState extends State<SpeechRecognizer> {
 
     _speech.setRecognitionResultHandler((String text) {
       if (_isListening == false && text != "") {
-        widget.addMessage(text);
+        widget.addMessage(text, isMine: true);
         _response(text);
         setState(() {
           return transcription = text;

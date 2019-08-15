@@ -6,18 +6,26 @@ import "package:flutter/material.dart";
 import "package:ai4e_mobileapp/widgets/fullWidthBtn/main.dart";
 import 'package:path_provider/path_provider.dart';
 import "package:ai4e_mobileapp/utils/time.dart";
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-typedef addMessageCallback = void Function(String, {bool isMine});
+typedef addMessageCallback = void Function(String,
+    {bool isMine, bool shouldSpeak});
+typedef addScoringDataCallback = void Function(
+    Map<String, dynamic>, int duration);
 
 class RecordBtn extends StatefulWidget {
-  RecordBtn({Key key, this.addMessage}) : super(key: key);
+  RecordBtn({Key key, this.addMessage, this.addScore, this.changeMode})
+      : super(key: key);
   final addMessageCallback addMessage;
+  final addScoringDataCallback addScore;
+  final changeMode;
   _RecordBtnState createState() => _RecordBtnState();
 }
 
 class _RecordBtnState extends State<RecordBtn> {
   bool isActive = false;
   int time = 180;
+  int duration = 0;
   Timer timer;
   Recording recording = Recording();
   String name;
@@ -87,7 +95,7 @@ class _RecordBtnState extends State<RecordBtn> {
       name = DateTime.now().microsecondsSinceEpoch.toString();
     });
     io.Directory directory = await getApplicationDocumentsDirectory();
-    widget.addMessage("Recording now", isMine: false);
+    widget.addMessage("Recording now", isMine: false, shouldSpeak: false);
     await AudioRecorder.start(
         path: '${directory.path}/$name',
         audioOutputFormat: AudioOutputFormat.WAV);
@@ -96,18 +104,33 @@ class _RecordBtnState extends State<RecordBtn> {
       isActive = true;
     });
     startTimer((timer) {
-      setState(() {
-        if (time > 0 && isActive) {
+      if (time > 0 && isActive) {
+        setState(() {
           time = time - 1;
-        } else {
-          _stopRecord();
+        });
+      } else {
+        cancelTimer();
+        _stopRecord();
+      }
+    });
+  }
+
+  _startFirestoreListen() {
+    Firestore.instance.collection('evaluations').snapshots().listen((data) {
+      data.documents.forEach((doc) {
+        if (doc.documentID == "$name.data") {
+          Map<String, dynamic> score = {"sentiment": {}, "topic": ""};
+          var data = doc.data;
+          score["sentiment"] = data["sentiment"];
+          score["topic"] = data["topic"];
+          widget.addScore(score, duration);
         }
       });
     });
   }
 
   _stopRecord() async {
-    widget.addMessage("Stopping recording.");
+    widget.addMessage("Stopping recording.", isMine: false, shouldSpeak: false);
     var _recording = await AudioRecorder.stop();
     setState(() {
       recording = _recording;
@@ -121,16 +144,22 @@ class _RecordBtnState extends State<RecordBtn> {
   }
 
   _send() async {
-    widget.addMessage("We are uploading your recording to the web.");
-    uploadFile(name, recording.path);
+    widget.addMessage("We are uploading your recording to the web.",
+        isMine: false);
     setState(() {
       isConfirm = false;
+      duration = recording.duration.inSeconds;
+    });
+    uploadFile(name, recording.path);
+    widget.changeMode();
+    setState(() {
       recording = Recording();
     });
+    _startFirestoreListen();
   }
 
   _cancel() async {
-    widget.addMessage("We are cancel your recording.");
+    widget.addMessage("We are cancelling your recording.", isMine: false);
     setState(() {
       isConfirm = false;
       recording = Recording();

@@ -15,7 +15,7 @@ Future uploadFile(String name, String path) async {
         HttpHeaders.contentLengthHeader: contents.length,
         HttpHeaders.contentTypeHeader: "audio/x-wav",
         HttpHeaders.authorizationHeader:
-            "Bearer ya29.GlxkB-_lCR5Wg4Lx0ANuHW1YaLvoEFEYwdCEZOWgPnTQ92h5nMZ8yZ7a9fyBdTVntETRnEBoLcGXB4Dp6s2M1jw7e6IoTkUoATGRufU-opERzcH4OPlZgwzZZulD7Q"
+            "Bearer ya29.GlxlB1_0w9TdtmlU4IWS1QGUVzQjx_EWWD3JNp_2C5AUIOyRwgCQydMYwBWSC_IpOSAfbyApKv8VOVJH9ZFnulAzcx5jly1zkCDTqL3K_LWs2vCEnqUNcqvSgdGoWg"
       },
     ),
   );
